@@ -1,1 +1,40 @@
+-- Create the 'animals' table
+CREATE TABLE animals (
+    animal_id SERIAL PRIMARY KEY,
+    animal_name VARCHAR(50),
+    species VARCHAR(50),
+    habitat_id INT
+);
 
+-- Create the 'habitats' table
+CREATE TABLE habitats (
+    habitat_id SERIAL PRIMARY KEY,
+    habitat_name VARCHAR(50),
+    climate VARCHAR(50)
+);
+
+-- Insert some sample data
+INSERT INTO animals (animal_name, species, habitat_id) VALUES
+    ('Lion', 'Mammal', 1),
+    ('Elephant', 'Mammal', 1),
+    ('Fish', 'Aquatic', 2),
+    ('Eagle', 'Bird', 3),
+    ('Snake', 'Reptile', 3);
+
+INSERT INTO habitats (habitat_name, climate) VALUES
+    ('Savannah', 'Tropical'),
+    ('Ocean', 'Marine'),
+    ('Desert', 'Arid');
+
+-- Query to get a list of habitats with their IDs, names, and the total number of animals in each habitat
+SELECT
+    h.habitat_id,
+    h.habitat_name,
+    h.climate,
+    COUNT(a.animal_id) AS total_animals
+FROM
+    habitats h
+LEFT JOIN
+    animals a ON h.habitat_id = a.habitat_id
+GROUP BY
+    h.habitat_id, h.habitat_name, h.climate;
